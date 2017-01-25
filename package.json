@@ -1,8 +1,8 @@
 {
-  "name": "palvelinohjelmointi",
+  "name": "react-redux-chat",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "React+Redux Chat Application With Server Side Rendering",
+  "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node -e js,jsx",
     "test": "echo \"Error: no test specified\" && exit 1"
