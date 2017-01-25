@@ -1,13 +1,12 @@
 @import "~bulma";
 
 html, body, #root {
-  height: 100%;
-  overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
-
 @each $name, $values in $colors {
-  .#{$name} {
-    color: nth($values, 1);
-  }
+	.#{$name} {
+		color: nth($values, 1);
+	}
 }
