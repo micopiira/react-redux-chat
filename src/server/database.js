@@ -1,6 +1,7 @@
 import shortid from 'shortid';
 import fs from 'fs';
 import data from '../data.json';
+import path from 'path';
 
 let db = {...data};
 
@@ -34,7 +35,7 @@ const api = {
 	addMessage: message => {
 		const msg = {...message, id: shortid.generate(), timestamp: new Date()};
 		db = {...db, messages: db.messages.concat(msg)};
-		fs.writeFile('../data.json', JSON.stringify(db), 'utf8', () => {
+		fs.writeFile(path.join(__dirname, '../data.json'), JSON.stringify(db), 'utf8', () => {
 		});
 		return msg;
 	}
