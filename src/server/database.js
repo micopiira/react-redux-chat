@@ -34,7 +34,7 @@ const api = {
 	addMessage: message => {
 		const msg = {...message, id: shortid.generate(), timestamp: new Date()};
 		db = {...db, messages: db.messages.concat(msg)};
-		fs.writeFile('./data.json', JSON.stringify(db), 'utf8', () => {
+		fs.writeFile('../data.json', JSON.stringify(db), 'utf8', () => {
 		});
 		return msg;
 	}

@@ -13,7 +13,7 @@ const ClientsListItem = ({client, isCurrentUser}) => <span>
 </span>;
 
 ClientsListItem.propTypes = {
-	client: React.PropTypes.string,
+	client: React.PropTypes.object,
 	isCurrentUser: React.PropTypes.bool
 };
 
