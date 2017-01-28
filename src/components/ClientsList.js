@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from '../propTypes';
 
 const StatusIcon = ({isOnline}) => <span className={`icon is-pulled-right ${isOnline ? 'success' : 'warning'}`}>
 	<i className="fa fa-circle"/>
@@ -13,7 +14,7 @@ const ClientsListItem = ({client, isCurrentUser}) => <span>
 </span>;
 
 ClientsListItem.propTypes = {
-	client: React.PropTypes.object,
+	client: propTypes.user,
 	isCurrentUser: React.PropTypes.bool
 };
 
@@ -28,8 +29,8 @@ const ClientsList = ({clients, user}) =>
 	</ul>;
 
 ClientsList.propTypes = {
-	clients: React.PropTypes.arrayOf(React.PropTypes.object),
-	user: React.PropTypes.object
+	clients: React.PropTypes.arrayOf(propTypes.user),
+	user: propTypes.user
 };
 
 export default ClientsList;
