@@ -18,7 +18,7 @@ import session from 'express-session';
 import webpackMiddleware from './server/middlewares/webpack';
 
 const app = Express();
-const server = http.createServer(app);
+export const server = http.createServer(app);
 const io = SocketIo(server);
 
 let clients = [];
@@ -53,7 +53,7 @@ app.use((req, res) => {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
 				const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 				if (!req.session.user) {
-					const randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+					const randomColor = 'red'; // TODO Implement
 					req.session.user = {
 						id: shortid.generate(),
 						color: randomColor
@@ -96,4 +96,12 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 				${scripts}
 			</body>
 		</html>`;
+};
+
+export const close = (fn) => {
+	io.close(() => {
+		server.close(() => {
+			fn();
+		});
+	});
 };
