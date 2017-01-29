@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import config from '../config.json';
+import config from '../../config.json';
 import axios from 'axios';
 
 const socket = io.connect(`http://192.168.1.101:${config.port}`);

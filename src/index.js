@@ -2,7 +2,7 @@ import Express from 'express';
 import db from './server/database';
 import SocketIo  from 'socket.io';
 import http from 'http';
-import config from './config.json';
+import config from '../config.json';
 import api from './server/api';
 import {match, RouterContext} from 'react-router';
 import routes from './client/routes';

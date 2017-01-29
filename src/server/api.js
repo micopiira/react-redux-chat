@@ -1,7 +1,7 @@
 import Express from 'express';
 import db from './database';
 import io from 'socket.io-client';
-import config from '../config.json';
+import config from '../../config.json';
 import bodyParser from 'body-parser';
 import querytypes from './middlewares/querytypes';
 
