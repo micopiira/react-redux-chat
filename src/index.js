@@ -18,7 +18,7 @@ import session from 'express-session';
 import webpackMiddleware from './server/middlewares/webpack';
 
 const app = Express();
-export const server = http.createServer(app);
+const server = http.createServer(app);
 const io = SocketIo(server);
 
 let clients = [];
@@ -77,8 +77,6 @@ app.use((req, res) => {
 	});
 });
 
-server.listen(config.port);
-
 const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 	console.log(assetsByChunkName);
 	const styles = assetsByChunkName.app.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`);
@@ -102,10 +100,6 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 		</html>`;
 };
 
-export const close = (fn) => {
-	io.close(() => {
-		server.close(() => {
-			fn();
-		});
-	});
-};
+server.listen(config.port);
+
+export default server;

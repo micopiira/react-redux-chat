@@ -1,9 +1,10 @@
-const {close, server} = require('../src/index');
+const server = require('../src/index').default;
 const {describe, it, after} = require('mocha');
 const chai = require('chai');
 const {assert, expect} = chai;
 const chaiHttp = require('chai-http');
 const http = require('http');
+
 chai.use(chaiHttp);
 
 describe('Test', () => {
@@ -17,6 +18,6 @@ describe('Test', () => {
 		});
 	}).timeout(15000);
 	after(() => {
-		close();
+		server.close();
 	});
 });
