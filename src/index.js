@@ -5,11 +5,11 @@ import http from 'http';
 import config from './config.json';
 import api from './server/api';
 import {match, RouterContext} from 'react-router';
-import routes from './routes';
+import routes from './client/routes';
 import React from 'react';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import * as reducers from './reducers';
+import * as reducers from './client/reducers';
 import {renderToString} from 'react-dom/server';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
@@ -33,7 +33,10 @@ io.on('connection', socket => {
 		cb(addedMsg);
 	});
 	socket.on('disconnect', () => {
-		io.sockets.emit('disconnected', clients.filter(client => client.socketId === socket.id).map(client => client.user).find(() => true));
+		io.sockets.emit('disconnected', clients
+			.filter(client => client.socketId === socket.id)
+			.map(client => client.user)
+			.find(() => true));
 		clients = clients.filter(client => client.socketId != socket.id)
 	});
 });
@@ -51,7 +54,6 @@ app.use((req, res) => {
 			res.redirect(302, redirectLocation.pathname + redirectLocation.search)
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
-				const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 				if (!req.session.user) {
 					const randomColor = 'red'; // TODO Implement
 					req.session.user = {
@@ -66,6 +68,7 @@ app.use((req, res) => {
 				const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger({collapsed: true})));
 				let html = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>);
 				const finalState = store.getState();
+				const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
 				res.status(200).send(renderFullPage(html, finalState, assetsByChunkName));
 			});
 		} else {
