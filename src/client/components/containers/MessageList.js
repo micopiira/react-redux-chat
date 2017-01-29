@@ -5,8 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import propTypes from '../../propTypes';
 
 const MessageListItem = ({message, showTimeAgo}) => <div>
-	<strong style={{color: message.sender.color}}>{message.sender.id}</strong>
-	<small>{showTimeAgo ? <TimeAgo minPeriod={60} date={message.timestamp}/> : new Date(message.timestamp).toISOString()}</small>
+	<strong style={{color: message.sender.color}}>{message.sender.id}</strong> <small>{showTimeAgo ? <TimeAgo minPeriod={60} date={message.timestamp}/> : new Date(message.timestamp).toISOString()}</small>
 	<ReactMarkdown source={message.text}/>
 </div>;
 
