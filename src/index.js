@@ -77,8 +77,9 @@ app.use((req, res) => {
 server.listen(config.port);
 
 const renderFullPage = (html, preloadedState, assetsByChunkName) => {
-	const styles = assetsByChunkName.main.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`);
-	const scripts = assetsByChunkName.main.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`);
+	console.log(assetsByChunkName);
+	const styles = assetsByChunkName.app.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`);
+	const scripts = assetsByChunkName.app.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`);
 	return `
 		<!doctype html>
 		<html lang="en">

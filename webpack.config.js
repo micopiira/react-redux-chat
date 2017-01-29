@@ -3,12 +3,22 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-	entry: './src/client.jsx',
-	output: {path: path.join(__dirname, 'static'), filename: 'bundle.js'},
+	entry: {
+		app: ['webpack-hot-middleware/client', './src/client.jsx']
+	},
+	output: {
+		path: path.join(__dirname, 'static'),
+		publicPath: '/',
+		filename: 'bundle.js'
+	},
 	resolve: {
 		extensions: ['', '.js', '.jsx']
 	},
-	plugins: [new ExtractTextPlugin('bundle.css')],
+	plugins: [
+		new ExtractTextPlugin('bundle.css'),
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin()
+	],
 	module: {
 		loaders: [
 			{
@@ -22,11 +32,8 @@ module.exports = {
 			},
 			{
 				test: /\.jsx?$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/,
-				query: {
-					presets: ['es2015', 'react', 'stage-2']
-				}
+				loaders: ['react-hot', 'babel-loader?presets[]=es2015,presets[]=stage-2,presets[]=react'],
+				exclude: /node_modules/
 			},
 			{
 				test: /\.css$/,
