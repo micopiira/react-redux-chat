@@ -13,9 +13,9 @@ import * as reducers from './client/reducers';
 import {renderToString} from 'react-dom/server';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import shortid from 'shortid';
 import session from 'express-session';
 import webpackMiddleware from './server/middlewares/webpack';
+import userMiddleware from './server/middlewares/user';
 
 const app = Express();
 const server = http.createServer(app);
@@ -45,6 +45,7 @@ app.use(session({secret: config.secret, resave: false, saveUninitialized: true})
 
 app.use('/api', api);
 app.use(webpackMiddleware);
+app.use(userMiddleware);
 
 app.use((req, res) => {
 	match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
@@ -54,13 +55,6 @@ app.use((req, res) => {
 			res.redirect(302, redirectLocation.pathname + redirectLocation.search)
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
-				if (!req.session.user) {
-					const randomColor = 'red'; // TODO Implement
-					req.session.user = {
-						id: shortid.generate(),
-						color: randomColor
-					};
-				}
 				const user = req.session.user;
 				io.sockets.emit('connected', user);
 				clients = clients.filter(client => client.id != user.id).concat(user);
