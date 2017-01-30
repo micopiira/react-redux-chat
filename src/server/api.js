@@ -23,7 +23,7 @@ api.get('/messages', (req, res) => {
 
 api.post('/messages', (req, res) => {
 	const message = {text: req.body.text, sender: req.session.user};
-	socket.emit('message', message, addedMessage => {
+	socket.emit('message', message, () => {
 		res.redirect('/');
 	});
 });

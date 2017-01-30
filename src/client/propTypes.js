@@ -16,4 +16,4 @@ const message = React.PropTypes.shape({
 export default {
 	user,
 	message
-}
+};

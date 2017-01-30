@@ -20,7 +20,7 @@ const api = {
 	addMessage: message => {
 		const msg = {...message, id: shortid.generate(), timestamp: new Date()};
 		db = {...db, messages: (db.messages || []).concat(msg)};
-		save(() => console.log('saved to file'));
+		save(() => {});
 		return msg;
 	}
 };

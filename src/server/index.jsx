@@ -37,7 +37,7 @@ io.on('connection', socket => {
 			.filter(client => client.socketId === socket.id)
 			.map(client => client.user)
 			.find(() => true));
-		clients = clients.filter(client => client.socketId != socket.id)
+		clients = clients.filter(client => client.socketId != socket.id);
 	});
 });
 
@@ -50,9 +50,9 @@ app.use(userMiddleware);
 app.use((req, res) => {
 	match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
 		if (error) {
-			res.status(500).send(error.message)
+			res.status(500).send(error.message);
 		} else if (redirectLocation) {
-			res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+			res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
 				const user = req.session.user;
@@ -66,7 +66,7 @@ app.use((req, res) => {
 				res.status(200).send(renderFullPage(html, finalState, assetsByChunkName));
 			});
 		} else {
-			res.status(404).send('Not found')
+			res.status(404).send('Not found');
 		}
 	});
 });
