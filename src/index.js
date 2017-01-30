@@ -95,4 +95,8 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 
 server.listen(config.port);
 
+console.log('The app is running at:');
+console.log();
+console.log(`http://localhost:${config.port}`);
+
 export default server;
