@@ -1,4 +1,4 @@
-const server = require('../src/index').default;
+const server = require('../src/server/index').default;
 const {describe, it, after} = require('mocha');
 const chai = require('chai');
 const {assert, expect} = chai;

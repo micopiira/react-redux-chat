@@ -1,21 +1,21 @@
 import Express from 'express';
-import db from './server/database';
+import db from './database';
 import SocketIo  from 'socket.io';
 import http from 'http';
-import config from '../config.json';
-import api from './server/api';
+import config from '../../config.json';
+import api from './api';
 import {match, RouterContext} from 'react-router';
-import routes from './client/routes';
+import routes from '../client/routes';
 import React from 'react';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import * as reducers from './client/reducers';
+import * as reducers from '../client/reducers';
 import {renderToString} from 'react-dom/server';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import session from 'express-session';
-import webpackMiddleware from './server/middlewares/webpack';
-import userMiddleware from './server/middlewares/user';
+import webpackMiddleware from './middlewares/webpack';
+import userMiddleware from './middlewares/user';
 
 const app = Express();
 const server = http.createServer(app);
