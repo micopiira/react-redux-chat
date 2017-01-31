@@ -2,7 +2,7 @@ import React from 'react';
 import propTypes from '../propTypes';
 
 const StatusIcon = ({isOnline}) => <span className={`icon is-pulled-right ${isOnline ? 'success' : 'warning'}`}>
-	<i className="fa fa-circle"/>
+	<i style={{fontSize: '0.5em'}} className="fa fa-circle"/>
 </span>;
 
 StatusIcon.propTypes = {
