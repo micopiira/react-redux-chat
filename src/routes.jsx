@@ -1,8 +1,8 @@
 import {Route, IndexRoute} from 'react-router';
 import React from 'react';
-import App from './components/containers/App';
-import About from './components/containers/About';
-import Chat from './components/containers/Chat';
+import App from './client/components/containers/App';
+import About from './client/components/containers/About';
+import Chat from './client/components/containers/Chat';
 
 const routes = <Route path="/" component={App}>
 	<IndexRoute component={Chat}/>

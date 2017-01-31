@@ -2,10 +2,10 @@ import React from 'react';
 import {render} from 'react-dom';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import * as reducers from './reducers';
+import * as reducers from '../reducers';
 import {Router, browserHistory} from 'react-router';
 import createLogger from 'redux-logger';
-import Routes from './routes';
+import Routes from '../routes';
 import thunk from 'redux-thunk';
 
 const preloadedState = window.__PRELOADED_STATE__;
