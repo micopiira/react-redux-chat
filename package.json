@@ -4,7 +4,7 @@
   "description": "React+Redux Chat Application With Server Side Rendering",
   "main": "src/index.js",
   "scripts": {
-    "start": "babel-node src/server/index.js",
+    "start": "babel-node src/server/index.jsx",
     "test": "mocha --compilers js:babel-register"
   },
   "author": "",
