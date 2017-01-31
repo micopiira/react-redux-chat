@@ -8,7 +8,9 @@ if (process.env.WEBPACK) {
 
 class App extends React.Component {
 	static propTypes = {
-		isFetching: React.PropTypes.bool
+		isFetching: React.PropTypes.bool,
+		children: React.PropTypes.element,
+		dispatch: React.PropTypes.func
 	};
 
 	componentDidMount() {

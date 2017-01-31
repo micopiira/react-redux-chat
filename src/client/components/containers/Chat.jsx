@@ -1,10 +1,17 @@
-import * as React from "react";
-import {connect} from "react-redux";
+import * as React from 'react';
+import {connect} from 'react-redux';
 import Form from './Form';
 import MessageList from './MessageList';
 import ClientsList from '../ClientsList';
+import propTypes from '../../propTypes';
 
 class Chat extends React.Component {
+	static propTypes = {
+		isFetching: React.PropTypes.bool,
+		clients: React.PropTypes.arrayOf(propTypes.user),
+		user: propTypes.user,
+		messages: React.PropTypes.arrayOf(propTypes.message)
+	};
 	render() {
 		const Loader = ({isFetching}) => isFetching ? <div>loading</div> : null;
 
@@ -23,7 +30,7 @@ class Chat extends React.Component {
 					<Form/>
 				</div>
 			</div>
-		</div>
+		</div>;
 	}
 }
 

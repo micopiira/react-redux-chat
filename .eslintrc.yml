@@ -29,3 +29,7 @@ rules:
   semi:
     - error
     - always
+  no-mixed-spaces-and-tabs:
+    - 2
+    - 'smart-tabs'
+

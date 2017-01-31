@@ -1,8 +1,13 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import {addMessage} from '../../actions';
 
 class Form extends React.Component {
+	static propTypes = {
+		isFetching: React.PropTypes.bool,
+		dispatch: React.PropTypes.func
+	};
+
 	constructor(props) {
 		super(props);
 		this.state = {value: ''};
@@ -36,7 +41,7 @@ class Form extends React.Component {
 				       className={`button is-large is-info${this.props.isFetching ? ' is-loading' : ''}`}
 				       value="send"/>
 			</p>
-		</form>
+		</form>;
 	}
 }
 
