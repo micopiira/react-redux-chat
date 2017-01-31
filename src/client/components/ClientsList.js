@@ -1,23 +1,6 @@
 import React from 'react';
 import propTypes from '../propTypes';
-
-const StatusIcon = ({isOnline}) => <span className={`icon is-pulled-right ${isOnline ? 'success' : 'warning'}`}>
-	<i style={{fontSize: '0.5em'}} className="fa fa-circle"/>
-</span>;
-
-StatusIcon.propTypes = {
-	isOnline: React.PropTypes.bool
-};
-
-const ClientsListItem = ({client, isCurrentUser}) => <span>
-	<a href="#" style={{color: client.color}}>{client.id}</a>{isCurrentUser ? ' (sinä)' : null} <StatusIcon isOnline={true}/>
-</span>;
-
-ClientsListItem.propTypes = {
-	client: propTypes.user,
-	isCurrentUser: React.PropTypes.bool
-};
-
+import ClientsListItem from './ClientsListItem';
 
 const ClientsList = ({clients, user}) =>
 	<ul>
