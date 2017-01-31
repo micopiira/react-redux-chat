@@ -1,11 +1,13 @@
 import shortid from 'shortid';
 
+const random = arr => arr[Math.floor(Math.random() * arr.length)];
+const colors = ['red', 'green', 'blue'];
+
 export default (req, res, next) => {
 	if (!req.session.user) {
-		const randomColor = 'red'; // TODO Implement
 		req.session.user = {
 			id: shortid.generate(),
-			color: randomColor
+			color: random(colors)
 		};
 	}
 	next();
