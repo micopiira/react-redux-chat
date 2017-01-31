@@ -1,27 +1,28 @@
 import shortid from 'shortid';
-import fs from 'fs';
-import data from '../data.json';
-import path from 'path';
+import storage from 'node-persist';
 
-let db = {...data};
+storage.initSync();
 
-const save = cb => {
-	fs.writeFile(path.join(__dirname, '../data.json'), JSON.stringify(db), 'utf8', cb);
-};
+const MESSAGES_KEY = 'messages';
+
+if (!storage.getItemSync(MESSAGES_KEY)) {
+	storage.setItemSync(MESSAGES_KEY, []);
+}
 
 const api = {
-	getMessages: pageRequest => Promise.resolve({
-		totalElements: db.messages.length,
-		content: db.messages.slice()
+	getMessages: pageRequest => storage.getItem(MESSAGES_KEY).then(messages => ({
+		totalElements: messages.length,
+		content: messages.slice()
 			.reverse()
 			.slice(pageRequest.page * pageRequest.size, pageRequest.page * pageRequest.size + pageRequest.size)
 			.reverse()
-	}),
+	})),
 	addMessage: message => {
 		const msg = {...message, id: shortid.generate(), timestamp: new Date()};
-		db = {...db, messages: (db.messages || []).concat(msg)};
-		save(() => {});
-		return msg;
+		return storage.getItem('messages')
+			.then(messages => messages.concat(msg))
+			.then(messages => storage.setItem('messages', messages))
+			.then(() => msg);
 	}
 };
 

@@ -28,9 +28,10 @@ io.on('connection', socket => {
 		clients = clients.map(client => client.id === user.id ? {...client, socketId: socket.id} : client);
 	});
 	socket.on('message', (msg, cb) => {
-		const addedMsg = db.addMessage({...msg});
-		io.sockets.emit('message', addedMsg);
-		cb(addedMsg);
+		db.addMessage({...msg}).then(addedMsg => {
+			io.sockets.emit('message', addedMsg);
+			cb(addedMsg);
+		});
 	});
 	socket.on('disconnect', () => {
 		io.sockets.emit('disconnected', clients

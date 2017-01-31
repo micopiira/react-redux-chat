@@ -3276,6 +3276,13 @@ node-libs-browser@^0.7.0:
     util "^0.10.3"
     vm-browserify "0.0.4"
 
+node-persist@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/node-persist/-/node-persist-2.0.8.tgz#553b44270a4260ce4553dee7b7df18b1cabed3d6"
+  dependencies:
+    mkdirp "~0.5.1"
+    q "~1.1.1"
+
 node-pre-gyp@^0.6.29:
   version "0.6.32"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.32.tgz#fc452b376e7319b3d255f5f34853ef6fd8fe1fd5"
@@ -3921,6 +3928,10 @@ punycode@^1.2.4, punycode@^1.4.1:
 q@^1.1.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
+
+q@~1.1.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
 
 qs@6.2.0:
   version "6.2.0"
