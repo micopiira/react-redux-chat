@@ -38,7 +38,7 @@ export const clients = (state = [], action) => {
 		case 'CLIENT_CONNECTED':
 			return state.concat(action.payload);
 		case 'CLIENT_DISCONNECTED':
-			return state.filter(client => client !== action.payload);
+			return state.filter(client => client.id !== action.payload.id);
 		default:
 			return state;
 	}

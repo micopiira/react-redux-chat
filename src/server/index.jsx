@@ -35,7 +35,6 @@ io.on('connection', socket => {
 	socket.on('disconnect', () => {
 		io.sockets.emit('disconnected', clients
 			.filter(client => client.socketId === socket.id)
-			.map(client => client.user)
 			.find(() => true));
 		clients = clients.filter(client => client.socketId != socket.id);
 	});

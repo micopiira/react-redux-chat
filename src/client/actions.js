@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import config from '../../config.json';
 import axios from 'axios';
 
-const socket = io.connect(`http://192.168.1.101:${config.port}`);
+const socket = io.connect(`http://0.0.0.0:${config.port}`);
 
 export const types = {
 	INIT_SOCKETS: 'INIT_SOCKETS',
@@ -21,11 +21,11 @@ export const initSockets = () => (dispatch, getState) => {
 	socket.on('connect', () => {
 		dispatch({type: types.CONNECTED, payload: socket.id});
 		socket.emit('auth', getState().user);
-		socket.on('disconnected', id => {
-			dispatch({type: types.CLIENT_DISCONNECTED, payload: id});
+		socket.on('disconnected', user => {
+			dispatch({type: types.CLIENT_DISCONNECTED, payload: user});
 		});
-		socket.on('connected', id => {
-			dispatch({type: types.CLIENT_CONNECTED, payload: id});
+		socket.on('connected', user => {
+			dispatch({type: types.CLIENT_CONNECTED, payload: user});
 		});
 		socket.on('message', message => {
 			dispatch({type: types.MESSAGE_RECEIVED, payload: message});
