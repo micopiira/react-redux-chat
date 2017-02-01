@@ -15,7 +15,6 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.props.dispatch(fetchMessages());
-		this.props.dispatch(initSockets());
 	}
 
 	render() {

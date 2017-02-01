@@ -7,10 +7,12 @@ import {Router, browserHistory} from 'react-router';
 import createLogger from 'redux-logger';
 import Routes from '../routes';
 import thunk from 'redux-thunk';
+import addSocketListener from './socketListener';
 
 const preloadedState = window.__PRELOADED_STATE__;
 
 const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger()));
+addSocketListener(store.dispatch, store.getState);
 
 render(
 	<Provider store={store}>
