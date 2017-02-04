@@ -36,10 +36,11 @@ class Form extends React.Component {
 				       type="text"
 				       value={this.state.value}
 				       onChange={this.handleChange}/>
-				<input type="submit"
-				       disabled={this.props.isFetching}
-				       className={`button is-large is-info${this.props.isFetching ? ' is-loading' : ''}`}
-				       value="send"/>
+				<button aria-label="send" disabled={this.props.isFetching} type="submit" className={`button is-large is-info${this.props.isFetching ? ' is-loading' : ''}`}>
+					<span className="icon" aria-hidden="true">
+						<i className="fa fa-paper-plane"/>
+					</span>
+				</button>
 			</p>
 		</form>;
 	}

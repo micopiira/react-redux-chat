@@ -26,9 +26,11 @@ class Chat extends React.Component {
 				</div>
 			</div>
 			<div className="tile is-vertical is-parent">
-				{this.state.showAlert && <div className="notification is-warning tile is-child" style={{flexGrow: 0}}>
+				{this.state.showAlert && <div className="tile is-child" style={{flexGrow: 0}}>
+					<div className="notification is-warning">
 					<p><strong>Warning!</strong> Your browser has JavaScript disabled or does not support JavaScript.</p>
 					<p>Messages will not automatically refresh, you will need to manually refresh the page to see any new messages.</p>
+					</div>
 				</div>}
 				<div className="tile is-child" style={{minHeight: 'initial', overflow: 'hidden'}}>
 					<MessageList messages={this.props.messages} user={this.props.user} showTimeAgo={!this.state.showAlert}/>

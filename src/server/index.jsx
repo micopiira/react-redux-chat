@@ -40,9 +40,9 @@ io.on('connection', socket => {
 		});
 	});
 	socket.on('disconnect', () => {
-		io.sockets.emit('disconnected', clients
+		io.sockets.emit('dispatch', {type: 'CLIENT_DISCONNECTED', payload: clients
 			.filter(client => client.socketId === socket.id)
-			.find(() => true));
+			.find(() => true)});
 		clients = clients.filter(client => client.socketId != socket.id);
 	});
 });
@@ -62,7 +62,7 @@ app.use((req, res) => {
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
 				const user = req.session.user;
-				io.sockets.emit('connected', user);
+				io.sockets.emit('dispatch', {type: 'CLIENT_CONNECTED', payload: user});
 				clients = clients.filter(client => client.id != user.id).concat(user);
 				const preloadedState = {messages: content, user, clients};
 				const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger({collapsed: true})));

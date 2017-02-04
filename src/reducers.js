@@ -3,7 +3,7 @@ import {types} from './client/actions';
 export const messages = (state = [], action) => {
 	switch (action.type) {
 		case types.RECEIVE_MESSAGE:
-			return state.concat(action.payload);
+			return state.filter(message => ![].concat(action.payload).map(m => m.id).includes(message.id)).concat(action.payload);
 		case types.ADD_MESSAGE:
 			return state.concat({...action.payload, sending: true});
 		case 'ADD_MESSAGE_SUCCESS':

@@ -18,13 +18,13 @@ export const receiveMessage = message => ({
 });
 
 export const fetchMessages = () => dispatch => {
-	socket.emit('get:messages', {page: 0, size: config.initialMessageCount}, messages => {
-		dispatch(receiveMessage(messages));
+	socket.emit('get:messages', {page: 0, size: config.initialMessageCount}, ({content}) => {
+		dispatch(receiveMessage(content));
 	});
 };
 
 export const addMessageThunk = text => (dispatch, getState) => {
-	const msg = {text, sender: getState().user, timestamp: new Date().toISOString()};
+	const msg = {id: null, text, sender: getState().user, timestamp: new Date().toISOString()};
 	const nonce = shortid.generate();
 	dispatch(addMessage({...msg, nonce}));
 	socket.emit('message', msg, addedMessage => {
