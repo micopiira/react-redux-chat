@@ -2,10 +2,12 @@ import {types} from './client/actions';
 
 export const messages = (state = [], action) => {
 	switch (action.type) {
-		case types.MESSAGE_RECEIVED:
+		case types.RECEIVE_MESSAGE:
 			return state.concat(action.payload);
-		case types.MESSAGES_RECEIVED:
-			return action.payload;
+		case types.ADD_MESSAGE:
+			return state.concat({...action.payload, sending: true});
+		case 'ADD_MESSAGE_SUCCESS':
+			return state.map(message => action.payload.nonce === message.nonce ? {...action.payload, sending: false} : message);
 		default:
 			return state;
 	}
@@ -14,10 +16,8 @@ export const messages = (state = [], action) => {
 export const isFetching = (state = false, action) => {
 	switch (action.type) {
 		case types.ADD_MESSAGE:
-		case types.FETCH_MESSAGES:
 			return true;
-		case types.MESSAGES_RECEIVED:
-		case types.MESSAGE_SENT:
+		case 'ADD_MESSAGE_SUCCESS':
 			return false;
 		default:
 			return state;

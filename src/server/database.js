@@ -5,9 +5,9 @@ const MESSAGES_KEY = 'messages';
 
 storage.initSync();
 
-if (!storage.getItemSync(MESSAGES_KEY)) {
-	storage.setItemSync(MESSAGES_KEY, []);
-}
+// if (!storage.getItemSync(MESSAGES_KEY)) {
+storage.setItemSync(MESSAGES_KEY, []);
+// }
 
 const arrayToPage = (array, pageRequest) => ({
 	totalElements: array.length,

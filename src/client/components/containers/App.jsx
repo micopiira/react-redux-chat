@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {initSockets, fetchMessages} from '../../actions';
+import {fetchMessages} from '../../actions';
 
 if (process.env.WEBPACK) {
 	require('../../index.scss');
@@ -18,7 +18,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		return <div className="container" style={{height: '100%'}}>
+		return <div style={{height: '100%'}}>
 			{this.props.children}
 		</div>;
 	}

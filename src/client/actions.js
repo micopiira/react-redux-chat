@@ -1,29 +1,33 @@
 import config from '../../config.json';
-import axios from 'axios';
 import {socket} from './socketListener';
+import shortid from 'shortid';
 
 export const types = {
-	INIT_SOCKETS: 'INIT_SOCKETS',
 	ADD_MESSAGE: 'ADD_MESSAGE',
-	FETCH_MESSAGES: 'FETCH_MESSAGES',
-	CLIENT_DISCONNECTED: 'CLIENT_DISCONNECTED',
-	CLIENT_CONNECTED: 'CLIENT_CONNECTED',
-	MESSAGE_RECEIVED: 'MESSAGE_RECEIVED',
-	MESSAGE_SENT: 'MESSAGE_SENT',
-	CONNECTED: 'CONNECTED',
-	MESSAGES_RECEIVED: 'MESSAGES_RECEIVED'
+	RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
 };
 
+export const addMessage = message => ({
+	type: types.ADD_MESSAGE,
+	payload: message
+});
+
+export const receiveMessage = message => ({
+	type: types.RECEIVE_MESSAGE,
+	payload: message
+});
+
 export const fetchMessages = () => dispatch => {
-	dispatch({type: types.FETCH_MESSAGES});
-	axios.get('/api/messages', {params: {page: 0, size: config.initialMessageCount}}).then(({data}) => {
-		dispatch({type: types.MESSAGES_RECEIVED, payload: data.content});
+	socket.emit('get:messages', {page: 0, size: config.initialMessageCount}, messages => {
+		dispatch(receiveMessage(messages));
 	});
 };
 
-export const addMessage = message => (dispatch, getState) => {
-	dispatch({type: types.ADD_MESSAGE, payload: message});
-	socket.emit('message', {text: message, sender: getState().user}, addedMessage => {
-		dispatch({type: types.MESSAGE_SENT, payload: addedMessage});
+export const addMessageThunk = text => (dispatch, getState) => {
+	const msg = {text, sender: getState().user, timestamp: new Date().toISOString()};
+	const nonce = shortid.generate();
+	dispatch(addMessage({...msg, nonce}));
+	socket.emit('message', msg, addedMessage => {
+		dispatch({type: 'ADD_MESSAGE_SUCCESS', payload: {...addedMessage, nonce}});
 	});
 };

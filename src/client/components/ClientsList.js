@@ -3,13 +3,12 @@ import propTypes from '../propTypes';
 import ClientsListItem from './ClientsListItem';
 
 const ClientsList = ({clients, user}) =>
-	<ul>
+	<nav className="panel">
+		<p className="panel-heading">Users</p>
 		{clients.map(client =>
-			<li style={{margin: '1em'}} key={client.id}>
-				<ClientsListItem client={client} isCurrentUser={client.id === user.id}/>
-			</li>
+			<ClientsListItem key={client.id} client={client} isCurrentUser={client.id === user.id}/>
 		)}
-	</ul>;
+	</nav>;
 
 ClientsList.propTypes = {
 	clients: React.PropTypes.arrayOf(propTypes.user),

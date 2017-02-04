@@ -16,6 +16,7 @@ import createLogger from 'redux-logger';
 import session from 'express-session';
 import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
+import {receiveMessage} from '../client/actions';
 
 const app = Express();
 const server = http.createServer(app);
@@ -29,8 +30,13 @@ io.on('connection', socket => {
 	});
 	socket.on('message', (msg, cb) => {
 		db.addMessage({...msg}).then(addedMsg => {
-			io.sockets.emit('message', addedMsg);
+			socket.broadcast.emit('dispatch', receiveMessage(addedMsg));
 			cb(addedMsg);
+		});
+	});
+	socket.on('get:messages', (pageRequest, cb) => {
+		db.getMessages(pageRequest).then(messages => {
+			cb(messages);
 		});
 	});
 	socket.on('disconnect', () => {

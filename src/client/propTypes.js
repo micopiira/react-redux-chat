@@ -9,7 +9,8 @@ const message = React.PropTypes.shape({
 	id: React.PropTypes.string,
 	text: React.PropTypes.string,
 	sender: user,
-	timestamp: React.PropTypes.string
+	timestamp: React.PropTypes.string,
+	sending: React.PropTypes.bool
 });
 
 

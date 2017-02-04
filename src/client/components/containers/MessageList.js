@@ -4,21 +4,19 @@ import MessageListItem from '../MessageListItem';
 import propTypes from '../../propTypes';
 
 class MessageList extends React.Component {
-	state = {
-		mounted: false
-	};
 	static propTypes = {
-		messages: React.PropTypes.arrayOf(propTypes.message)
+		messages: React.PropTypes.arrayOf(propTypes.message),
+		user: propTypes.user,
+		showTimeAgo: React.PropTypes.bool
 	};
-	componentDidMount() {
-		this.setState({mounted: true});
-	}
 	render() {
 		return <div style={{overflowY: 'scroll', height: '100%'}}>
 			<ul>
 				{this.props.messages.map(message =>
-					<li key={message.id} style={{marginBottom: '1em'}}>
-						<MessageListItem message={message} showTimeAgo={this.state.mounted}/>
+					<li key={message.id} style={{margin: '1em'}} className="is-clearfix">
+						<div className={'notification' + (message.sender.id === this.props.user.id ? ' is-pulled-right is-info' : ' is-pulled-left')}>
+							<MessageListItem message={message} showTimeAgo={this.props.showTimeAgo}/>
+						</div>
 					</li>
 				)}
 			</ul>

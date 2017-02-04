@@ -1,3 +1,5 @@
+$radius: 0;
+
 @import "~bulma";
 
 html, body, #root {
@@ -8,5 +10,18 @@ html, body, #root {
 @each $name, $values in $colors {
 	.#{$name} {
 		color: nth($values, 1);
+	}
+}
+
+.tile {
+	outline: 1px solid #dbdbdb;
+	padding: 0;
+	&.is-parent {
+		padding: 0;
+	}
+	&.is-vertical {
+		& > .tile.is-child:not(:last-child) {
+			margin-bottom: 0 !important
+		  }
 	}
 }

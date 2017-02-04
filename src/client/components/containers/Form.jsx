@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addMessage} from '../../actions';
+import {addMessageThunk} from '../../actions';
 
 class Form extends React.Component {
 	static propTypes = {
@@ -21,7 +21,7 @@ class Form extends React.Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		this.props.dispatch(addMessage(this.state.value));
+		this.props.dispatch(addMessageThunk(this.state.value));
 		this.setState({value: ''});
 	}
 
