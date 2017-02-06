@@ -78,8 +78,8 @@ app.use((req, res) => {
 });
 
 const renderFullPage = (html, preloadedState, assetsByChunkName) => {
-	const styles = assetsByChunkName.app.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`);
-	const scripts = assetsByChunkName.app.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`);
+	const styles = assetsByChunkName.app.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`).join('');
+	const scripts = assetsByChunkName.app.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`).join('');
 	return `
 		<!doctype html>
 		<html lang="en">
