@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import config from '../../config.json';
 
-export const socket = io.connect(`http://0.0.0.0:${config.port}`);
+export const socket = io.connect(`http://127.0.0.1:${config.port}`);
 
 export default (dispatch, getState) => {
 	socket.on('connect', () => {
