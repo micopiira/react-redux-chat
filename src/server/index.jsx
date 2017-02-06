@@ -96,7 +96,7 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 				<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')};</script>
 				${scripts}
 			</body>
-		</html>`;
+		</html>`.replace(/\n\s+/g, '');
 };
 
 server.listen({host: '0.0.0.0', port: config.port}, () => {
