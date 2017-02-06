@@ -1,5 +1,5 @@
 import config from '../../config.json';
-import {socket} from './socketListener';
+import {getSocket} from './socketListener';
 import shortid from 'shortid';
 
 export const types = {
@@ -18,7 +18,7 @@ export const receiveMessage = message => ({
 });
 
 export const fetchMessages = () => dispatch => {
-	socket.emit('get:messages', {page: 0, size: config.initialMessageCount}, ({content}) => {
+	getSocket().emit('get:messages', {page: 0, size: config.initialMessageCount}, ({content}) => {
 		dispatch(receiveMessage(content));
 	});
 };
@@ -27,7 +27,7 @@ export const addMessageThunk = text => (dispatch, getState) => {
 	const msg = {id: null, text, sender: getState().user, timestamp: new Date().toISOString()};
 	const nonce = shortid.generate();
 	dispatch(addMessage({...msg, nonce}));
-	socket.emit('message', msg, addedMessage => {
+	getSocket().emit('message', msg, addedMessage => {
 		dispatch({type: 'ADD_MESSAGE_SUCCESS', payload: {...addedMessage, nonce}});
 	});
 };

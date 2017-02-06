@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const devIp = require('dev-ip')();
 
 module.exports = {
 	entry: {
@@ -19,6 +20,7 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),
 		new webpack.DefinePlugin({
+			__IP__: JSON.stringify(devIp.length ? devIp[0] : '0.0.0.0'),
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
 		}),
 		new webpack.optimize.UglifyJsPlugin({

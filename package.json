@@ -27,6 +27,7 @@
     "body-parser": "^1.16.0",
     "bulma": "^0.3.1",
     "css-loader": "^0.26.1",
+    "dev-ip": "^1.0.1",
     "express": "^4.14.0",
     "express-session": "^1.15.0",
     "extract-text-webpack-plugin": "^1.0.1",
