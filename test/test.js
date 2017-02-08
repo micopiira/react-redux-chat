@@ -14,7 +14,7 @@ describe('Routes', () => {
 				expect(res).to.have.status(200);
 				done(err);
 			});
-		}).timeout(15000);
+		}).timeout(25000);
 	});
 	describe('GET /404', () => {
 		it('should return 404', done => {
