@@ -5,7 +5,7 @@ import config from '../../config.json';
 import bodyParser from 'body-parser';
 import querytypes from './middlewares/querytypes';
 
-const socket = io.connect(`http://localhost:${config.port}`);
+const socket = io.connect(`http://0.0.0.0:${config.port}`);
 const api = Express();
 
 api.use(bodyParser.json());

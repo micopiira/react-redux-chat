@@ -17,6 +17,7 @@ import session from 'express-session';
 import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
 import {receiveMessage} from '../client/actions';
+import {getServerIp} from '../utils';
 
 const app = Express();
 const server = http.createServer(app);
@@ -105,6 +106,7 @@ server.listen({host: '0.0.0.0', port: config.port}, () => {
 	console.log('The app is running at:');
 	console.log();
 	console.log(`\thttp://${address}:${port}`);
+	console.log(`\thttp://${getServerIp()}:${port}`);
 	/* eslint-enable no-console */
 });
 
