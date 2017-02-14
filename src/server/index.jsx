@@ -100,7 +100,7 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 		</html>`.replace(/\n\s+/g, '');
 };
 
-server.listen({host: '0.0.0.0', port: config.port}, () => {
+server.listen({host: 'localhost', port: config.port}, () => {
 	const {address, port} = server.address();
 	/* eslint-disable no-console */
 	console.log('The app is running at:');
