@@ -35,7 +35,8 @@ class Form extends React.Component {
 				       disabled={this.props.isFetching}
 				       type="text"
 				       value={this.state.value}
-				       onChange={this.handleChange}/>
+				       onChange={this.handleChange}
+				       ref={input => input && input.focus()}/>
 				<button aria-label="send" disabled={this.props.isFetching} type="submit" className={`button is-large is-info${this.props.isFetching ? ' is-loading' : ''}`}>
 					<span className="icon" aria-hidden="true">
 						<i className="fa fa-paper-plane"/>
