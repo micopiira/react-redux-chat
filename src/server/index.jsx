@@ -41,9 +41,12 @@ io.on('connection', socket => {
 		});
 	});
 	socket.on('disconnect', () => {
-		io.sockets.emit('dispatch', {type: 'CLIENT_DISCONNECTED', payload: clients
+		const client = clients
 			.filter(client => client.socketId === socket.id)
-			.find(() => true)});
+			.find(() => true);
+		if (client) {
+			io.sockets.emit('dispatch', {type: 'CLIENT_DISCONNECTED', payload: client});
+		}
 		clients = clients.filter(client => client.socketId != socket.id);
 	});
 });
@@ -100,7 +103,7 @@ const renderFullPage = (html, preloadedState, assetsByChunkName) => {
 		</html>`.replace(/\n\s+/g, '');
 };
 
-server.listen({host: 'localhost', port: config.port}, () => {
+server.listen({host: '0.0.0.0', port: config.port}, () => {
 	const {address, port} = server.address();
 	/* eslint-disable no-console */
 	console.log('The app is running at:');
