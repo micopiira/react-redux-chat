@@ -14,6 +14,7 @@ parserOptions:
   sourceType: module
 plugins:
   - react
+  - json
 rules:
   indent:
     - error

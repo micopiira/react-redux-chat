@@ -1,6 +1,8 @@
 const lint = require('mocha-eslint');
 
 const paths = [
+	'package.json',
+	'config.json',
 	'src/**/*.js',
 	'src/**/*.jsx'
 ];
