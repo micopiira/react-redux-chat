@@ -13,11 +13,12 @@ import * as reducers from '../reducers';
 import {renderToString} from 'react-dom/server';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import session from 'express-session';
 import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
-import {receiveMessage, types} from '../client/actions';
+import sessionMiddleware from './middlewares/session';
+import {receiveMessage, clientConnected, clientDisconnected} from '../client/actions';
 import {getServerIp} from '../utils';
+import renderFullPage from './template';
 
 const app = Express();
 const server = http.createServer(app);
@@ -45,14 +46,13 @@ io.on('connection', socket => {
 			.filter(client => client.socketId === socket.id)
 			.find(() => true);
 		if (client) {
-			io.sockets.emit('dispatch', {type: types.CLIENT_DISCONNECTED, payload: client});
+			io.sockets.emit('dispatch', clientDisconnected(client));
 		}
 		clients = clients.filter(client => client.socketId != socket.id);
 	});
 });
 
-app.use(session({secret: config.secret, resave: false, saveUninitialized: true}));
-
+app.use(sessionMiddleware);
 app.use('/api', api);
 app.use(webpackMiddleware);
 app.use(userMiddleware);
@@ -66,42 +66,21 @@ app.use((req, res) => {
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
 				const user = req.session.user;
-				io.sockets.emit('dispatch', {type: types.CLIENT_CONNECTED, payload: user});
+				io.sockets.emit('dispatch', clientConnected(user));
 				clients = clients.filter(client => client.id != user.id).concat(user);
 				const preloadedState = {messages: content, user, clients};
 				const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger({collapsed: true})));
-				let html = renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>);
-				const finalState = store.getState();
-				const assetsByChunkName = res.locals.webpackStats.toJson().assetsByChunkName;
-				res.status(200).send(renderFullPage(html, finalState, assetsByChunkName));
+				res.status(200).send(renderFullPage(
+					renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>),
+					store.getState(),
+					res.locals.webpackStats.toJson().assetsByChunkName
+				));
 			});
 		} else {
 			res.status(404).send('Not found');
 		}
 	});
 });
-
-const renderFullPage = (html, preloadedState, assetsByChunkName) => {
-	const styles = assetsByChunkName.app.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}">`).join('');
-	const scripts = assetsByChunkName.app.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`).join('');
-	return `
-		<!doctype html>
-		<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-				<meta http-equiv="X-UA-Compatible" content="ie=edge">
-				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-				<title>${config.title}</title>
-				${styles}
-			</head>
-			<body>
-				<div id="root">${html}</div>
-				<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')};</script>
-				${scripts}
-			</body>
-		</html>`.replace(/\n\s+/g, '');
-};
 
 server.listen({host: '0.0.0.0', port: config.port}, () => {
 	const {address, port} = server.address();

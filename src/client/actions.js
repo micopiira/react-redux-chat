@@ -20,6 +20,16 @@ export const receiveMessage = message => ({
 	payload: message
 });
 
+export const clientConnected = client => ({
+	type: types.CLIENT_CONNECTED,
+	payload: client
+});
+
+export const clientDisconnected = client => ({
+	type: types.CLIENT_DISCONNECTED,
+	payload: client
+});
+
 export const fetchMessages = () => dispatch => {
 	getSocket().emit('get:messages', {page: 0, size: config.initialMessageCount}, ({content}) => {
 		dispatch(receiveMessage(content));
