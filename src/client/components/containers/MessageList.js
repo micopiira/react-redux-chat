@@ -10,8 +10,7 @@ class MessageList extends React.Component {
 		showTimeAgo: React.PropTypes.bool
 	};
 	render() {
-		return <div style={{overflowY: 'scroll', height: '100%'}}>
-			<ul>
+		const content = this.props.messages.length ? <ul>
 				{this.props.messages.map(message =>
 					<li key={message.id} style={{margin: '1em'}} className="is-clearfix">
 						<div className={'notification' + (message.sender.id === this.props.user.id ? ' is-pulled-right is-info' : ' is-pulled-left')}>
@@ -19,11 +18,12 @@ class MessageList extends React.Component {
 						</div>
 					</li>
 				)}
-			</ul>
+			</ul> : <div className="is-overlay" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><h1 className="title">No messages yet</h1></div>;
+		return <div style={{overflowY: 'scroll', height: '100%', position: 'relative'}}>
+			{content}
 		</div>;
 	}
 }
-
 export default AutoScroll({
 	property: 'messages'
 })(MessageList);
