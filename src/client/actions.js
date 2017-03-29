@@ -4,7 +4,10 @@ import shortid from 'shortid';
 
 export const types = {
 	ADD_MESSAGE: 'ADD_MESSAGE',
-	RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
+	RECEIVE_MESSAGE: 'RECEIVE_MESSAGE',
+	ADD_MESSAGE_SUCCESS: 'ADD_MESSAGE_SUCCESS',
+	CLIENT_CONNECTED: 'CLIENT_CONNECTED',
+	CLIENT_DISCONNECTED: 'CLIENT_DISCONNECTED'
 };
 
 export const addMessage = message => ({
@@ -28,6 +31,6 @@ export const addMessageThunk = text => (dispatch, getState) => {
 	const nonce = shortid.generate();
 	dispatch(addMessage({...msg, nonce}));
 	getSocket().emit('message', msg, addedMessage => {
-		dispatch({type: 'ADD_MESSAGE_SUCCESS', payload: {...addedMessage, nonce}});
+		dispatch({type: types.ADD_MESSAGE_SUCCESS, payload: {...addedMessage, nonce}});
 	});
 };

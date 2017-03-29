@@ -16,7 +16,7 @@ import createLogger from 'redux-logger';
 import session from 'express-session';
 import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
-import {receiveMessage} from '../client/actions';
+import {receiveMessage, types} from '../client/actions';
 import {getServerIp} from '../utils';
 
 const app = Express();
@@ -45,7 +45,7 @@ io.on('connection', socket => {
 			.filter(client => client.socketId === socket.id)
 			.find(() => true);
 		if (client) {
-			io.sockets.emit('dispatch', {type: 'CLIENT_DISCONNECTED', payload: client});
+			io.sockets.emit('dispatch', {type: types.CLIENT_DISCONNECTED, payload: client});
 		}
 		clients = clients.filter(client => client.socketId != socket.id);
 	});
@@ -66,7 +66,7 @@ app.use((req, res) => {
 		} else if (renderProps) {
 			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
 				const user = req.session.user;
-				io.sockets.emit('dispatch', {type: 'CLIENT_CONNECTED', payload: user});
+				io.sockets.emit('dispatch', {type: types.CLIENT_CONNECTED, payload: user});
 				clients = clients.filter(client => client.id != user.id).concat(user);
 				const preloadedState = {messages: content, user, clients};
 				const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger({collapsed: true})));
