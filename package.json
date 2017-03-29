@@ -1,19 +1,25 @@
 {
   "name": "react-redux-chat",
   "version": "1.0.0",
-  "description": "React+Redux Chat Application With Server Side Rendering",
+  "description": "React + Redux Chat Application With Server Side Rendering",
   "main": "src/index.js",
   "scripts": {
     "start": "babel-node src/server/index.jsx",
     "test": "mocha --compilers js:babel-register"
   },
-  "author": "",
+  "author": {
+    "name": "Mico Piira",
+    "email": "mico.piira@gmail.com",
+    "url": "https://github.com/micopiira"
+  },
   "license": "ISC",
+  "private": true,
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "eslint": "^3.14.1",
+    "eslint": "^3.18.0",
+    "eslint-plugin-json": "^1.2.0",
     "eslint-plugin-react": "latest",
     "mocha": "^3.2.0",
     "mocha-eslint": "^3.0.1"
