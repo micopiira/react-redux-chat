@@ -1,6 +1,4 @@
-import config from '../../config.json';
 import {getSocket} from './socketListener';
-import shortid from 'shortid';
 
 export const types = {
 	ADD_MESSAGE: 'ADD_MESSAGE',
@@ -30,17 +28,15 @@ export const clientDisconnected = client => ({
 	payload: client
 });
 
-export const fetchMessages = () => dispatch => {
-	getSocket().emit('get:messages', {page: 0, size: config.initialMessageCount}, ({content}) => {
-		dispatch(receiveMessage(content));
-	});
-};
+export const hideJsAlert = () => ({
+	type: 'HIDE_JS_ALERT'
+});
+
+export const showJsAlert = () => ({
+	type: 'SHOW_JS_ALERT'
+});
 
 export const addMessageThunk = text => (dispatch, getState) => {
 	const msg = {id: null, text, sender: getState().user, timestamp: new Date().toISOString()};
-	const nonce = shortid.generate();
-	dispatch(addMessage({...msg, nonce}));
-	getSocket().emit('message', msg, addedMessage => {
-		dispatch({type: types.ADD_MESSAGE_SUCCESS, payload: {...addedMessage, nonce}});
-	});
+	getSocket().emit('message', msg);
 };

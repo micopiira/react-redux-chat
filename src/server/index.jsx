@@ -19,21 +19,27 @@ import sessionMiddleware from './middlewares/session';
 import {receiveMessage, clientConnected, clientDisconnected} from '../client/actions';
 import {getServerIp} from '../utils';
 import renderFullPage from './template';
+import cookieParser from 'cookie-parser';
 
 const app = Express();
 const server = http.createServer(app);
 const io = SocketIo(server);
 
-let clients = [];
+const serverStore = createStore(combineReducers((({clients, messages}) => ({clients, messages}))(reducers)), applyMiddleware(thunk, createLogger({collapsed: true})));
+
+const dispatchGlobally = action => {
+	serverStore.dispatch(action);
+	io.sockets.emit('dispatch', action);
+};
 
 io.on('connection', socket => {
 	socket.on('auth', user => {
-		clients = clients.map(client => client.id === user.id ? {...client, socketId: socket.id} : client);
+		dispatchGlobally({type: 'AUTH', payload: {socket: {id: socket.id}, user}});
 	});
 	socket.on('message', (msg, cb) => {
 		db.addMessage({...msg}).then(addedMsg => {
-			socket.broadcast.emit('dispatch', receiveMessage(addedMsg));
-			cb(addedMsg);
+			dispatchGlobally(receiveMessage(addedMsg));
+			cb(msg);
 		});
 	});
 	socket.on('get:messages', (pageRequest, cb) => {
@@ -42,13 +48,7 @@ io.on('connection', socket => {
 		});
 	});
 	socket.on('disconnect', () => {
-		const client = clients
-			.filter(client => client.socketId === socket.id)
-			.find(() => true);
-		if (client) {
-			io.sockets.emit('dispatch', clientDisconnected(client));
-		}
-		clients = clients.filter(client => client.socketId != socket.id);
+		dispatchGlobally(clientDisconnected({id: socket.id}));
 	});
 });
 
@@ -56,6 +56,7 @@ app.use(sessionMiddleware);
 app.use('/api', api);
 app.use(webpackMiddleware);
 app.use(userMiddleware);
+app.use(cookieParser());
 
 app.use((req, res) => {
 	match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
@@ -64,18 +65,19 @@ app.use((req, res) => {
 		} else if (redirectLocation) {
 			res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 		} else if (renderProps) {
-			db.getMessages({page: 0, size: config.initialMessageCount}).then(({content}) => {
-				const user = req.session.user;
-				io.sockets.emit('dispatch', clientConnected(user));
-				clients = clients.filter(client => client.id != user.id).concat(user);
-				const preloadedState = {messages: content, user, clients};
-				const store = createStore(combineReducers(reducers), preloadedState, applyMiddleware(thunk, createLogger({collapsed: true})));
-				res.status(200).send(renderFullPage(
-					renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>),
-					store.getState(),
-					res.locals.webpackStats.toJson().assetsByChunkName
-				));
-			});
+			const user = req.session.user;
+			dispatchGlobally(clientConnected(user));
+			if (req.query.hideJsAlert) {
+				res.cookie('hideJsAlert', JSON.stringify(true));
+				res.redirect('/');
+			}
+			const initialClientState = {user, showJsAlert: !req.cookies.hideJsAlert};
+			const store = createStore(combineReducers(reducers), {...serverStore.getState(), ...initialClientState}, applyMiddleware(thunk, createLogger({collapsed: true})));
+			res.status(200).send(renderFullPage(
+				renderToString(<Provider store={store}><RouterContext {...renderProps} /></Provider>),
+				store.getState(),
+				res.locals.webpackStats.toJson().assetsByChunkName
+			));
 		} else {
 			res.status(404).send('Not found');
 		}

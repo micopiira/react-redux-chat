@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {fetchMessages} from '../../actions';
 
 if (process.env.WEBPACK) {
 	require('../../index.scss');
@@ -12,10 +11,6 @@ class App extends React.Component {
 		children: React.PropTypes.element,
 		dispatch: React.PropTypes.func
 	};
-
-	componentDidMount() {
-		this.props.dispatch(fetchMessages());
-	}
 
 	render() {
 		return <div style={{height: '100%'}}>

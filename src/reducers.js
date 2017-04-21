@@ -16,7 +16,7 @@ export const messages = (state = [], action) => {
 export const isFetching = (state = false, action) => {
 	switch (action.type) {
 		case types.ADD_MESSAGE:
-			return true;
+			return false;
 		case 'ADD_MESSAGE_SUCCESS':
 			return false;
 		default:
@@ -26,8 +26,19 @@ export const isFetching = (state = false, action) => {
 
 export const user = (state = null, action) => {
 	switch (action.type) {
-		// case types.CONNECTED:
-		//     return action.payload;
+		 case 'LOGIN':
+		     return action.payload;
+		default:
+			return state;
+	}
+};
+
+export const showJsAlert = (state = true, action) => {
+	switch (action.type) {
+		case 'HIDE_JS_ALERT':
+			return false;
+		case 'SHOW_JS_ALERT':
+			return true;
 		default:
 			return state;
 	}
@@ -35,10 +46,12 @@ export const user = (state = null, action) => {
 
 export const clients = (state = [], action) => {
 	switch (action.type) {
-		case 'CLIENT_CONNECTED':
-			return state.concat(action.payload);
-		case 'CLIENT_DISCONNECTED':
-			return state.filter(client => client.id !== action.payload.id);
+		case types.CLIENT_CONNECTED:
+			return state.filter(client => client.id !== action.payload.id).concat(action.payload);
+		case types.CLIENT_DISCONNECTED:
+			return state.filter(client => client.socketId !== action.payload.id);
+		case 'AUTH':
+			return state.map(client => client.id === action.payload.user.id ? {...client, socketId: action.payload.socket.id} : client);
 		default:
 			return state;
 	}

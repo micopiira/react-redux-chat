@@ -2,7 +2,7 @@ import config from '../../config.json';
 import packageJson from '../../package.json';
 
 const getAssetsByExtension = (assets, extension, mapFn) =>
-	assets.app
+	[].concat(assets.app)
 		.filter(path => path.endsWith(extension))
 		.map(mapFn)
 		.join('');
