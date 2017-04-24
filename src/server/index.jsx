@@ -15,7 +15,7 @@ import createLogger from 'redux-logger';
 import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
 import sessionMiddleware from './middlewares/session';
-import {receiveMessage, clientConnected, clientDisconnected} from '../client/actions';
+import {receiveMessage, clientConnected, clientDisconnected} from '../actions';
 import renderFullPage from './template';
 import cookieParser from 'cookie-parser';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addMessageThunk} from '../../actions';
+import {addMessageThunk} from '../../../actions';
 
 class Form extends React.Component {
 	static propTypes = {

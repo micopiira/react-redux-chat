@@ -4,7 +4,7 @@ import Form from './Form';
 import MessageList from './MessageList';
 import ClientsList from '../ClientsList';
 import propTypes from '../../propTypes';
-import {hideJsAlert} from '../../actions';
+import {hideJsAlert} from '../../../actions';
 import {Link} from 'react-router';
 
 class Chat extends React.Component {

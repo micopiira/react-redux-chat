@@ -1,4 +1,4 @@
-import {types} from './client/actions';
+import {types} from './actions';
 
 export const messages = (state = [], action) => {
 	switch (action.type) {

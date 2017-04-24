@@ -1,4 +1,4 @@
-import {getSocket} from './socketListener';
+import {getSocket} from './client/socketListener';
 
 export const types = {
 	ADD_MESSAGE: 'ADD_MESSAGE',
