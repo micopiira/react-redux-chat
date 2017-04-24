@@ -2,7 +2,6 @@ import Express from 'express';
 import db from './database';
 import SocketIo  from 'socket.io';
 import http from 'http';
-import config from '../../config.json';
 import api from './api';
 import {match, RouterContext} from 'react-router';
 import routes from '../routes';
@@ -17,7 +16,6 @@ import webpackMiddleware from './middlewares/webpack';
 import userMiddleware from './middlewares/user';
 import sessionMiddleware from './middlewares/session';
 import {receiveMessage, clientConnected, clientDisconnected} from '../client/actions';
-import {getServerIp} from '../utils';
 import renderFullPage from './template';
 import cookieParser from 'cookie-parser';
 
@@ -82,16 +80,6 @@ app.use((req, res) => {
 			res.status(404).send('Not found');
 		}
 	});
-});
-
-server.listen({host: '0.0.0.0', port: config.port}, () => {
-	const {address, port} = server.address();
-	/* eslint-disable no-console */
-	console.log('The app is running at:');
-	console.log();
-	console.log(`\thttp://${address}:${port}`);
-	console.log(`\thttp://${getServerIp()}:${port}`);
-	/* eslint-enable no-console */
 });
 
 export default server;
