@@ -25,9 +25,9 @@ class Chat extends React.Component {
 		this.setState({mounted: true});
 	}
 	render() {
-		return <div className="tile is-ancestor is-parent" style={{height: '100%', padding: 0, margin: 0}}>
-			<div className="tile is-parent is-3" style={{margin: 0}}>
-				<div className="tile is-child">
+		return <div className="tile is-ancestor is-parent" style={{height: '100%', padding: 0, margin: 0, minHeight: 0}}>
+			<div className="tile is-parent is-3" style={{margin: 0, minHeight: 0}}>
+				<div className="tile is-child" style={{minHeight: 0}}>
 					<ClientsList clients={this.props.clients} user={this.props.user}/>
 				</div>
 			</div>
